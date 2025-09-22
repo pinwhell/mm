@@ -9,8 +9,9 @@ enum {
 	MM_ARENA_ALREADY_EXISTS
 };
 
+struct mm_arena;
 typedef struct mm_block_head {
-	void* parent;
+	struct mm_arena* parent;
 	size_t size;
 	int free;
 	struct mm_block_head* next;
@@ -24,8 +25,8 @@ typedef struct {
 
 void mm_arena_init(mm_arena* a, void* base, size_t size);
 void* mm_arena_alloc(mm_arena* a, size_t size);
-void* mm_arena_realloc(void* old_ptr, size_t new_sz);
-#define mm_arena_free mm_free
+void* mm_arena_realloc(mm_arena* a, void* old_ptr, size_t new_sz);
+void mm_arena_free(mm_arena* a, void* ptr);
 
 int mm_add_arena(void* base, size_t size);
 void* mm_alloc(size_t size);
@@ -146,6 +147,15 @@ void* mm_arena_alloc(mm_arena* a, size_t size)
 	return (char*)b + sizeof(mm_block_head);
 }
 
+void mm_arena_free(mm_arena* a, void* ptr)
+{
+	if (!ptr) return;
+	mm_block_head* b = (mm_block_head*)((char*)ptr - sizeof(mm_block_head));
+	if (b->parent != a) return;
+	b->free = 1;
+	mm_arena_defrag(b->parent);
+}
+
 void mm_free(void* ptr)
 {
 	if (!ptr) return;
@@ -196,11 +206,12 @@ int mm_block_head_try_grow(mm_block_head* h, size_t to_new_size)
 	return 1; // Expanded successfully
 }
 
-void* mm_arena_realloc(void* old_ptr, size_t new_sz)
+void* mm_arena_realloc(mm_arena* a, void* old_ptr, size_t new_sz)
 {
 	new_sz = (new_sz + 7) & ~7; // 8-byte align
 	if (!old_ptr) return mm_alloc(new_sz);
 	mm_block_head* b = (mm_block_head*)((char*)old_ptr - sizeof(mm_block_head));
+	if (b->parent != a) return NULL;
 	if (b->size >= new_sz) return old_ptr; // Fits
 	if (mm_block_head_try_grow(b, new_sz)) return old_ptr;
 	void* new_ptr = mm_arena_alloc(b->parent, new_sz);

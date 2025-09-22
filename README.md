@@ -54,12 +54,12 @@ mm_free(arr);
 ```
 ## Private Arena
 ```c
-char buff[0x1000];
+char b[0x1000];
 mm_arena a = { 0u }; 
-mm_arena_init(&a, buff, sizeof(buff));
+mm_arena_init(&a, b, sizeof(b));
 void* p = mm_arena_alloc(&a, 0x100u);
-p = mm_arena_realloc(p, 0x200u);
-mm_arena_free(a);
+p = mm_arena_realloc(&a, p, 0x200u);
+mm_arena_free(&a, p);
 ```
 ## License
 

@@ -24,10 +24,10 @@ int main()
 
 	// Test Private Arena
 
-	char test_arena_buff_2[0x1000];
-	mm_arena test_arena_2 = { 0u }; 
-	mm_arena_init(&test_arena_2, test_arena_buff_2, sizeof(test_arena_buff_2));
-	void* a = mm_arena_alloc(&test_arena_2, 0x100u);
-	a = mm_arena_realloc(a, 0x200u);
-	mm_arena_free(a);
+	char b[0x1000];
+	mm_arena a = { 0u };
+	mm_arena_init(&a, b, sizeof(b));
+	void* p = mm_arena_alloc(&a, 0x100u);
+	p = mm_arena_realloc(&a, p, 0x200u);
+	mm_arena_free(&a, p);
 }
