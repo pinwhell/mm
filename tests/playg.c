@@ -1,3 +1,4 @@
+#define MM_IMPL
 #include <mm/mm.h>
 
 #define TEST_ARENA_HIDDEN_SIZE sizeof(mm_block_head) * 3u
