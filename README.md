@@ -52,6 +52,15 @@ for (int i = 4; i < 8; i++) arr[i] = i;
 
 mm_free(arr);
 ```
+## Private Arena
+```c
+char buff[0x1000];
+mm_arena a = { 0u }; 
+mm_arena_init(&a, buff, sizeof(buff));
+void* p = mm_arena_alloc(&a, 0x100u);
+p = mm_arena_realloc(p, 0x200u);
+mm_arena_free(a);
+```
 ## License
 
 MIT
