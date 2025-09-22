@@ -21,4 +21,13 @@ int main()
 	mm_free(v2);
 	v1 = mm_realloc(v1, TEST_ARENA_ACTUAL_SIZE); // Success!
 	void* fail = mm_realloc(v1, sizeof(test_arena)); // Fail!
+
+	// Test Private Arena
+
+	char test_arena_buff_2[0x1000];
+	mm_arena test_arena_2 = { 0u }; 
+	mm_arena_init(&test_arena_2, test_arena_buff_2, sizeof(test_arena_buff_2));
+	void* a = mm_arena_alloc(&test_arena_2, 0x100u);
+	a = mm_arena_realloc(a, 0x200u);
+	mm_arena_free(a);
 }
