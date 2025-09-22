@@ -6,7 +6,7 @@ option(MM_FREESTANDING "Use freestanding mode (disable <string.h>)" OFF)
 set(ARENA_ARR_SZ 16 CACHE STRING "Number of arenas")
 
 add_library(mm STATIC src/mm.c)
-target_include_directories(mm PUBLIC include)
+target_include_directories(mm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Define macros for the compiler
 if(MM_FREESTANDING)
     target_compile_definitions(mm PUBLIC MM_FREESTANDING=1)
