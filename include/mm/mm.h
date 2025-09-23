@@ -80,7 +80,9 @@ void mm_arena_init(mm_arena* a, void* base, size_t size)
 }
 
 void mm_init() {
+#ifdef MM_MT
 	spnlck_init(&arenas_lck);
+#endif
 }
 // expects arenas_lck lock held
 int __mm_add_arena(void* base, size_t size)
