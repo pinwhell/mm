@@ -7,6 +7,7 @@ char test_arena[TEST_ARENA_HIDDEN_SIZE + TEST_ARENA_ACTUAL_SIZE];
 
 int main()
 {
+	mm_init();
 	if (mm_add_arena(test_arena, sizeof(test_arena))) return 1u;
 	char* v1 = mm_alloc(8u);
 	char* v2 = mm_alloc(8u);

@@ -1,11 +1,12 @@
 
 # MM – C Memory Manager / Arena Allocator
 
-A lightweight, arena-based memory manager for C.
+A lightweight, arena-based thread-safe memory manager for C.
 
 ----------
 
 ## Features
+-   Thread Safe
 
 -   Multiple memory **arenas** support
     
@@ -28,6 +29,8 @@ A lightweight, arena-based memory manager for C.
 #include <stdio.h>
 
 int main() {
+    mm_init();
+    _
     char mem[1024];
     mm_add_arena(mem, sizeof(mem));
 
@@ -43,6 +46,7 @@ int main() {
 
 ## Realloc Example
 ```c
+mm_init();_
 int* arr = mm_alloc(4 * sizeof(int));
 for (int i = 0; i < 4; i++) arr[i] = i;
 

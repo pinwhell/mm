@@ -1,0 +1,3 @@
+[submodule "vendor/spnlck"]
+	path = vendor/spnlck
+	url = https://github.com/pinwhell/spnlck
