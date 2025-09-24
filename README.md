@@ -46,7 +46,7 @@ int main() {
 
 ## Realloc Example
 ```c
-mm_init();_
+mm_init();
 int* arr = mm_alloc(4 * sizeof(int));
 for (int i = 0; i < 4; i++) arr[i] = i;
 
