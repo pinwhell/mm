@@ -30,7 +30,7 @@ A lightweight, arena-based thread-safe memory manager for C.
 
 int main() {
     mm_init();
-    _
+    
     char mem[1024];
     mm_add_arena(mem, sizeof(mem));
 
